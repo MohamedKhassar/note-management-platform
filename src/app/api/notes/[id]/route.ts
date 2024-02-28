@@ -5,7 +5,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string }
     try {
         const { id } = params
         const body = await req.json()
-        const note = await NoteModel.findByIdAndUpdate(id, body)
+        const note = await NoteModel.findByIdAndUpdate(id, body, { new: true })
         return NextResponse.json(note, { status: 201 })
     } catch (error) {
         const message = (error as Error).message
