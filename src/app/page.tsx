@@ -1,7 +1,7 @@
 "use client"
 import { AppDispatch } from '@/store'
 import { getNotes } from '@/store/notes/noteThunk'
-import { Loader2, Pencil, Plus, Trash2 } from 'lucide-react'
+import { Loader2, Paperclip, Pencil, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -31,17 +31,21 @@ const page = () => {
           <Plus color="white" />
         </Link>
       </div>
-      <div className='grid grid-cols-5 gap-7 justify-items-center'>
+      <div className='grid grid-cols-5 gap-14 justify-items-center'>
         {!loading ? notes.map(note =>
           <div className='bg-slate-950 rounded-md text-white p-7 flex flex-col gap-y-7 h-60 w-64'>
+            <Paperclip className='absolute translate-x-52 -translate-y-8' color='darkblue' size={30} />
             <h1 className='text-2xl capitalize'>{note.title}</h1>
             <p>{note.content}</p>
+            <div className='flex items-end h-full justify-end gap-x-5 text-gray-600'>
+              <small>{new Date(note.date).toDateString().replaceAll(" ", "-")}</small>
+            </div>
             <div className='flex items-end h-full justify-end gap-x-5'>
-              <div className='bg-white rounded-full p-2 cursor-pointer'>
+              <div className='bg-red-700 rounded-full p-2 cursor-pointer'>
                 <Trash2 size={20} color='#000000' />
               </div>
               <Link href={`/${note._id}`}>
-                <div className='bg-white rounded-full p-2 cursor-pointer'>
+                <div className='bg-blue-900 rounded-full p-2 cursor-pointer'>
                   <Pencil size={20} color='#000000' />
                 </div>
               </Link>
