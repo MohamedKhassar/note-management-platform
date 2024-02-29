@@ -5,7 +5,7 @@ import { Loader2, Paperclip, Pencil, Plus, Trash2 } from 'lucide-react'
 import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -31,7 +31,7 @@ const page = () => {
 
   const deleteOneNote = (id: string) => {
     dispatch(deleteNote(id))
-    nav.reload()
+    // nav.refresh()
   }
 
   return (
