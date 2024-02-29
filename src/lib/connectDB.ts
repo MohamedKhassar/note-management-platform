@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { DB } = process.env
+console.log(DB)
 mongoose.connect(DB!)
 mongoose.connection.on("error", () => {
     console.log("Error connecting to MongoDB")
