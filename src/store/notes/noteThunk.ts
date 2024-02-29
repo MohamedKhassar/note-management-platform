@@ -1,17 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { redirect } from "next/navigation";
 
-export const getNotes = createAsyncThunk("note/getNotes", async () => {
+export const getNotes = createAsyncThunk("note/getNotes", async (_, { rejectWithValue }) => {
     try {
         const res = await fetch("http://localhost:3000/api/notes")
         const data = await res.json()
         return data
     } catch (error) {
         const message = (error as Error).message
-        throw Error(message);
+        return rejectWithValue(message);
     }
 });
 
-export const addNote = createAsyncThunk("note/addNote", async (credentials: { title: string, content: string }, thunkAPI) => {
+export const addNote = createAsyncThunk("note/addNote", async (credentials: { title: string, content: string }, { rejectWithValue }) => {
     try {
         const res = await fetch("", {
             headers: {
@@ -24,10 +25,10 @@ export const addNote = createAsyncThunk("note/addNote", async (credentials: { ti
         return data
     } catch (error) {
         const message = (error as Error).message
-        return thunkAPI.rejectWithValue(message);
+        return rejectWithValue(message);
     }
 })
-export const updateNote = createAsyncThunk("note/updateNote", async (credentials: { id: string, title: string, content: string }, thunkAPI) => {
+export const updateNote = createAsyncThunk("note/updateNote", async (credentials: { id: string, title: string, content: string }, { rejectWithValue }) => {
     try {
         const res = await fetch("", {
             headers: {
@@ -40,21 +41,20 @@ export const updateNote = createAsyncThunk("note/updateNote", async (credentials
         return data
     } catch (error) {
         const message = (error as Error).message
-        return thunkAPI.rejectWithValue(message);
+        return rejectWithValue(message);
     }
 })
-export const deleteNote = createAsyncThunk("note/deleteNote", async (credentials: { id: string }, thunkAPI) => {
+export const deleteNote = createAsyncThunk("note/deleteNote", async (id: string, { rejectWithValue }) => {
+    console.log(id)
     try {
-        const res = await fetch("", {
+        const res = await fetch(`http://localhost:3000/api/notes/${id}`, {
             headers: {
                 "Content-Type": "application/json",
             },
             method: "DELETE",
         })
-        const data = await res.json()
-        return data
     } catch (error) {
         const message = (error as Error).message
-        return thunkAPI.rejectWithValue(message);
+        return rejectWithValue(message);
     }
 })

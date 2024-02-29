@@ -1,6 +1,7 @@
 "use client"
 import { createSlice } from "@reduxjs/toolkit";
 import { addNote, deleteNote, getNotes, updateNote } from "./noteThunk";
+import { redirect } from "next/navigation";
 
 type CustomInit = {
     notes: [],
@@ -50,7 +51,6 @@ const noteSlice = createSlice({
             state.loading = true
         }).addCase(deleteNote.fulfilled, (state, action) => {
             state.loading = false
-            state.notes = action.payload
         }).addCase(deleteNote.rejected, (state, action) => {
             state.loading = false
             state.error = action.error
