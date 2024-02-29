@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import { redirect } from "next/navigation";
 
 export const getNotes = createAsyncThunk("note/getNotes", async (_, { rejectWithValue }) => {
@@ -53,6 +54,21 @@ export const deleteNote = createAsyncThunk("note/deleteNote", async (id: string,
             },
             method: "DELETE",
         })
+    } catch (error) {
+        const message = (error as Error).message
+        return rejectWithValue(message);
+    }
+})
+export const getOneNote = createAsyncThunk("note/getOneNote", async (id: string, { rejectWithValue }) => {
+    try {
+        const res = await axios.get(`http://localhost:3000/api/notes/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "DELETE",
+        })
+        const data = await res.data
+        return data
     } catch (error) {
         const message = (error as Error).message
         return rejectWithValue(message);
