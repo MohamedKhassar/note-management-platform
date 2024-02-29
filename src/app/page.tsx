@@ -22,16 +22,18 @@ const page = () => {
   const notes: Note[] = data.notes
   const loading = data.loading
   const dispatch = useDispatch<AppDispatch>()
+  const getAllNotes = () => {
+    dispatch(getNotes())
+  }
   useEffect(() => {
-    const getAllNotes = () => {
-      dispatch(getNotes())
-    }
     getAllNotes()
   }, [dispatch])
 
   const deleteOneNote = (id: string) => {
-    dispatch(deleteNote(id))
-    // nav.refresh()
+    dispatch(deleteNote(id)).then(() =>
+      getAllNotes()
+    )
+
   }
 
   return (
