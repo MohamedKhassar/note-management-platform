@@ -24,9 +24,8 @@ const page = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        dispatch(addNote({title, content}))
-       router.push("/")
-             // Navigate to the new post page
+        dispatch(addNote({title, content})).then(()=>
+       router.push("/"))
     };
     
     return (
