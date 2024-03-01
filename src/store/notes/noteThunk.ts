@@ -15,15 +15,7 @@ export const getNotes = createAsyncThunk("note/getNotes", async (_, { rejectWith
 
 export const addNote = createAsyncThunk("note/addNote", async (credentials: { title: string, content: string }, { rejectWithValue }) => {
     try {
-        const res = await fetch("", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify(credentials)
-        })
-        const data = await res.json()
-        return data
+        await axios.post("http://localhost:3000/api/notes", credentials)
     } catch (error) {
         const message = (error as Error).message
         return rejectWithValue(message);
@@ -31,15 +23,7 @@ export const addNote = createAsyncThunk("note/addNote", async (credentials: { ti
 })
 export const updateNote = createAsyncThunk("note/updateNote", async (credentials: { id: string, title: string, content: string }, { rejectWithValue }) => {
     try {
-        const res = await fetch("", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "PUT",
-            body: JSON.stringify({ title: credentials.title, content: credentials.content })
-        })
-        const data = await res.json()
-        return data
+        await axios.put(`http://localhost:3000/api/notes/${credentials.id}`, { title: credentials.title, content: credentials.content })
     } catch (error) {
         const message = (error as Error).message
         return rejectWithValue(message);
@@ -48,12 +32,7 @@ export const updateNote = createAsyncThunk("note/updateNote", async (credentials
 export const deleteNote = createAsyncThunk("note/deleteNote", async (id: string, { rejectWithValue }) => {
     console.log(id)
     try {
-        const res = await fetch(`http://localhost:3000/api/notes/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "DELETE",
-        })
+        await axios.delete(`http://localhost:3000/api/notes/${id}`)
     } catch (error) {
         const message = (error as Error).message
         return rejectWithValue(message);
@@ -61,12 +40,7 @@ export const deleteNote = createAsyncThunk("note/deleteNote", async (id: string,
 })
 export const getOneNote = createAsyncThunk("note/getOneNote", async (id: string, { rejectWithValue }) => {
     try {
-        const res = await axios.get(`http://localhost:3000/api/notes/${id}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "DELETE",
-        })
+        const res = await axios.get(`http://localhost:3000/api/notes/${id}`)
         const data = await res.data
         return data
     } catch (error) {

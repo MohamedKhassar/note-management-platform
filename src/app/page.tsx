@@ -2,9 +2,7 @@
 import { AppDispatch } from '@/store'
 import { deleteNote, getNotes, getOneNote } from '@/store/notes/noteThunk'
 import { Loader2, Paperclip, Pencil, Plus, Trash2 } from 'lucide-react'
-import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,10 +33,6 @@ const page = () => {
     )
 
   }
-  const getOne = (id: string) => {
-    dispatch(getOneNote(id))
-  }
-
   return (
     <div>
       <div className='bg-slate-950 rounded-full text-white p-2 m-3 w-fit'>
