@@ -1,31 +1,21 @@
 "use client"; // This is a client component 👈🏽
 
 import { FormEvent, useState } from "react";
-import axios from 'axios';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { addNote } from "@/store/notes/noteThunk";
-import { redirect, useRouter } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
-
-
-
+import { useRouter } from 'next/navigation';
 
 const page = () => {
     const [title, setTitle] = useState(""); // I can use client hooks 
     const [content, setContent] = useState("");
-    const [added, setAdded] = useState("");
     const dispatch = useDispatch<AppDispatch>();
-    const router=useRouter()
-     
-    // const fieldEmpty = () => {
-    //     return title === "" || content === "";
-    // };
+    const router = useRouter()
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+        e.preventDefault();        
         dispatch(addNote({title, content})).then(()=>
-       router.push("/"))
+        router.push("/"))
     };
     
     return (
@@ -53,10 +43,7 @@ const page = () => {
                                 placeholder="Content"
                             ></textarea>
                         </div>
-                        <div className="w-full text-center">
-                            <p className="text-green-400 p-4 text-lg">{added}</p>
-                        </div>
-                        <button type="submit" className="py-2 px-4 bg-green-500 hover:bg-green-400 text-gray-300 rounded-md shadow-sm font-medium">
+                        <button type="submit" className="py-2 px-4 bg-green-500 hover:bg-green-400 text-gray-100 rounded-md shadow-sm font-medium">
                             Add note
                         </button>
                     </form>
