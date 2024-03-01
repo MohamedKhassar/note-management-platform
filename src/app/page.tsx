@@ -1,6 +1,6 @@
 "use client"
 import { AppDispatch } from '@/store'
-import { deleteNote, getNotes } from '@/store/notes/noteThunk'
+import { deleteNote, getNotes, getOneNote } from '@/store/notes/noteThunk'
 import { Loader2, Paperclip, Pencil, Plus, Trash2 } from 'lucide-react'
 import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
@@ -22,16 +22,21 @@ const page = () => {
   const notes: Note[] = data.notes
   const loading = data.loading
   const dispatch = useDispatch<AppDispatch>()
+  const getAllNotes = () => {
+    dispatch(getNotes())
+  }
   useEffect(() => {
-    const getAllNotes = () => {
-      dispatch(getNotes())
-    }
     getAllNotes()
   }, [dispatch])
 
   const deleteOneNote = (id: string) => {
-    dispatch(deleteNote(id))
-    // nav.refresh()
+    dispatch(deleteNote(id)).then(() =>
+      getAllNotes()
+    )
+
+  }
+  const getOne = (id: string) => {
+    dispatch(getOneNote(id))
   }
 
   return (
@@ -42,7 +47,7 @@ const page = () => {
         </Link>
       </div>
       <div className={!loading ? `grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 lg:gap-14 gap-7 justify-items-center` : 'w-full h-[70vh] flex items-center justify-center'}>
-        {/* {!loading ? notes.map(note =>
+        {!loading ? notes.map(note =>
           <div className='bg-slate-950 rounded-md text-white p-7 flex flex-col gap-y-7 h-60 w-64' key={note._id}>
             <Paperclip className='absolute translate-x-52 -translate-y-8' color='darkblue' size={30} />
             <h1 className='text-2xl capitalize' >{note.title}</h1>
@@ -61,7 +66,7 @@ const page = () => {
               </Link>
             </div>
           </div>
-        ) : <div className='w-full flex justify-center'><Loader2 size={90} className='animate-spin' /></div>} */}
+        ) : <div className='w-full flex justify-center'><Loader2 size={90} className='animate-spin' /></div>}
       </div>
     </div>
   )
