@@ -31,7 +31,7 @@ const noteSlice = createSlice({
         })
         builder.addCase(addNote.pending, (state) => {
             state.loading = true
-        }).addCase(addNote.fulfilled, (state, action) => {
+        }).addCase(addNote.fulfilled, (state) => {
             state.loading = false
         }).addCase(addNote.rejected, (state, action) => {
             state.loading = false
@@ -39,7 +39,7 @@ const noteSlice = createSlice({
         })
         builder.addCase(updateNote.pending, (state) => {
             state.loading = true
-        }).addCase(updateNote.fulfilled, (state, action) => {
+        }).addCase(updateNote.fulfilled, (state) => {
             state.loading = false
         }).addCase(updateNote.rejected, (state, action) => {
             state.loading = false
@@ -47,7 +47,7 @@ const noteSlice = createSlice({
         })
         builder.addCase(deleteNote.pending, (state) => {
             state.loading = true
-        }).addCase(deleteNote.fulfilled, (state, action) => {
+        }).addCase(deleteNote.fulfilled, (state) => {
             state.loading = false
         }).addCase(deleteNote.rejected, (state, action) => {
             state.loading = false
