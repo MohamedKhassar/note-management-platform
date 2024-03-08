@@ -13,9 +13,14 @@ const page = () => {
     const router = useRouter()
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();        
-        dispatch(addNote({title, content})).then(()=>
-        router.push("/"))
+        e.preventDefault(); 
+        const fields = {
+            title: title.trim(),
+            content: content.trim()
+        }  
+        if( fields.title.length >= 5 && fields.content.length > 5) {     
+            dispatch(addNote({title, content})).then(() => router.push("/"))
+        }
     };
     
     return (

@@ -1,9 +1,9 @@
 "use client"; // This is a client component 👈🏽
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
-import { updateNote } from "@/store/notes/noteThunk"; // Assumed updateNote thunk is available
+import { getNotes, getOneNote, updateNote } from "@/store/notes/noteThunk"; // Assumed updateNote thunk is available
 import { useParams, useRouter } from 'next/navigation';
 
 const page = () => {
@@ -15,13 +15,28 @@ const page = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        const fields = {
+            title: title.trim(),
+            content: content.trim()
+        }
 
-        await dispatch(updateNote({id, title, content}))
-        .then(() => {
-            router.push('/'); 
-        });
+        if(fields.title.length >= 5 && fields.content.length > 5) {
+            await dispatch(updateNote({id, title, content}))
+            .then(() => {
+                router.push('/'); 
+            });
+        }
     };
     
+    useEffect(()=>{
+        const getOne=async()=>{
+           const {payload}= await dispatch(getOneNote(id))
+           setTitle(payload.title)
+           setContent(payload.content)
+           dispatch(getNotes())
+        }
+        getOne()
+    },[dispatch,id])
     return (
         <div className="w-full flex justify-center">
             <section className="w-6/12 min-w-96 max-w-xl bg-slate-950 p-4 mt-4 h-full rounded-md ">
@@ -36,6 +51,7 @@ const page = () => {
                                 className="bg-gray-300 p-4 w-full rounded-md shadow-sm"
                                 type="text"
                                 id="title"
+                                value={title}
                                 placeholder="Title"
                             />
                         </div>
@@ -44,6 +60,7 @@ const page = () => {
                                 onChange={(event) => setContent(event.target.value)}
                                 className="bg-gray-300 p-4 w-full rounded-md shadow-sm"
                                 id="content"
+                                value={content}
                                 placeholder="Content"
                             ></textarea>
                         </div>
