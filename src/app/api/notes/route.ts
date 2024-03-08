@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server"
 export const GET = async (req: NextRequest) => {
     try {
         const query = req.nextUrl.searchParams.get("query")
-        const notes = query ? await NoteModel.where("title", { $regex: query }) : await NoteModel.find()
+        const notes = query ? await NoteModel.where("title", { $regex: query.toLowerCase() }) : await NoteModel.find()
         return NextResponse.json(notes, { status: 200 })
     } catch (error) {
         const message = (error as Error).message

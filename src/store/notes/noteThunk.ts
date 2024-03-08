@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-export const getNotes = createAsyncThunk("note/getNotes", async (_, { rejectWithValue }) => {
+export const getNotes = createAsyncThunk("note/getNotes", async (query:string, { rejectWithValue }) => {
     try {
-        const res = await fetch("http://localhost:3000/api/notes")
+        const res = await fetch(`http://localhost:3000/api/notes?query=${query}`)
         const data = await res.json()
         return data
     } catch (error) {

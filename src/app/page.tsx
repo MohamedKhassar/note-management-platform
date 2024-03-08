@@ -4,7 +4,7 @@ import { deleteNote, getNotes, getOneNote } from '@/store/notes/noteThunk'
 import { Loader2, Paperclip, Pencil, Plus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 type Note = {
@@ -17,29 +17,38 @@ type Note = {
 const page = () => {
   const nav = useRouter()
   const data = useSelector((state: any) => state.note)
+  const [query,setQuery]=useState("")
   const notes: Note[] = data.notes
   const loading = data.loading
   const dispatch = useDispatch<AppDispatch>()
   const getAllNotes = () => {
-    dispatch(getNotes())
+    dispatch(getNotes(query))
   }
   useEffect(() => {
     getAllNotes()
-  }, [dispatch])
+  }, [query])
 
   const deleteOneNote = (id: string) => {
     dispatch(deleteNote(id)).then(() =>
       getAllNotes()
     )
-
   }
   return (
     <div>
-      <div className='bg-slate-950 rounded-full text-white p-2 m-3 w-fit'>
-        <Link href="/create">
-          <Plus color="white" />
-        </Link>
-      </div>
+      <div className='flex justify-between mb-12'>
+        <div className='bg-slate-950 rounded-full text-white p-2 m-3 w-fit'>
+          <Link href="/create">
+            <Plus color="white" />
+          </Link>
+        </div> 
+          <input
+            onChange={(event) => setQuery(event.target.value)}
+            className="bg-gray-300 w-1/2 text-gray-500 p-4 rounded-md shadow-sm"
+            type="text"
+            id="title"
+            placeholder="Title"
+          />
+        </div>
       <div className={!loading ? `grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 lg:gap-14 gap-7 justify-items-center` : 'w-full h-[70vh] flex items-center justify-center'}>
         {!loading ? notes.map(note =>
           <div className='bg-slate-950 rounded-md text-white p-7 flex flex-col gap-y-7 h-60 w-64' key={note._id}>
